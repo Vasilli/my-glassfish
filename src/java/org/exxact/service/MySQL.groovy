@@ -16,9 +16,9 @@ class MySQL {
 
 
     def final static LOGIN =
-        "SELECT id,username,admin,sales " +
-        "FROM exxact.system_users " +
-        "WHERE deleted=0 AND username=? AND passwd=?"
+        """SELECT id,username,admin,sales
+        FROM exxact.system_users
+        WHERE deleted=0 AND username=? AND passwd=?"""
 
     def testLogin = { user, passwd ->
 
@@ -35,7 +35,7 @@ class MySQL {
             return "{success:false, time:${time}, msg:'Incorrect user or password.' }"
         }
     }
-//println "row=${row}"
+
     def final static READ_USERS =
         """SELECT SQL_CALC_FOUND_ROWS IFNULL(CAST(
         CONCAT(
@@ -51,15 +51,15 @@ class MySQL {
         '}') AS CHAR),'{}') json
         FROM exxact.system_users"""
 
-    def readUsers(sort, search, start, limit) {
+    def readUsers(sort, dir, search, start, limit) {
 
         def count = 0, data = [], where = '', orderby = ''
         def time = benchmark {
             if(search) {
-                where = " WHERE username LIKE '%${search}%' OR fullname LIKE '%${search}%'"
+                where = " WHERE username LIKE '%${search}%' OR fullname LIKE '%${search}%' "
             }
             if(sort) {
-                orderby = " ORDER BY ${sort[0].property} ${sort[0].direction}"
+                orderby = " ORDER BY ${sort} ${dir} "
             }
             sql.eachRow(READ_USERS + where + orderby, start, limit) {
                 data << it.json

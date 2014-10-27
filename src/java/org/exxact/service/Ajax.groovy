@@ -30,9 +30,10 @@ class Ajax extends HttpServlet {
                 break
 
             case 'users':
-                def sort = StringtoJson(request.getParameter('sort'))
+                def sort = request.getParameter('sort')
+                def dir  = request.getParameter('dir')
                 switch(request.getParameter('ex')) {
-                    case 'read'   : json = sql.readUsers(sort, search, start, limit); break
+                    case 'read'   : json = sql.readUsers(sort, dir, search, start, limit); break
                     case 'create' : json = sql.createUsers(getJson(request)); break
                     case 'update' : json = sql.updateUsers(getJson(request)); break
                     case 'erase'  : json = sql.eraseUsers(); break

@@ -25,7 +25,7 @@ Ext.define('Exxact.model.Users', {
             totalProperty: 'total',
             successProperty: 'success'
         },
-        //simpleSortMode: true
+        simpleSortMode: true,
         filterParam: 'query',
         remoteFilter: true,
         listeners: {
