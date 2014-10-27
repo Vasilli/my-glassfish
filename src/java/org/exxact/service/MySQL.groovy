@@ -29,27 +29,16 @@ class MySQL {
         }
 
         if(row) {
-            return "{success:true, time:${time}, user:{id:${row.id}, name:'${row.username}', admin:${row.admin}, sales:${row.sales}}}"
+            return [ success:true, time:time, user:[ id:row.id, name:row.username, admin:row.admin, sales:row.sales ] ]
         }
         else {
-            return "{success:false, time:${time}, msg:'Incorrect user or password.' }"
+            return [ success:false, time:time, msg: 'Incorrect user or password.' ]
         }
     }
 
     def final static READ_USERS =
-        """SELECT SQL_CALC_FOUND_ROWS IFNULL(CAST(
-        CONCAT(
-        '{id:',id,
-        ',username:',QUOTE(username),
-        ',admin:',admin,
-        ',sales:',sales,
-        ',fullname:',QUOTE(fullname),
-        ',date:',QUOTE(date),
-        ',email:',QUOTE(email),
-        ',phone:',QUOTE(phone),
-        ',deleted:',deleted,
-        '}') AS CHAR),'{}') json
-        FROM exxact.system_users"""
+        "SELECT SQL_CALC_FOUND_ROWS id,username,admin,sales,fullname,date,email,phone,deleted FROM exxact.system_users "
+
 
     def readUsers(sort, dir, search, start, limit) {
 
@@ -62,23 +51,22 @@ class MySQL {
                 orderby = " ORDER BY ${sort} ${dir} "
             }
             sql.eachRow(READ_USERS + where + orderby, start, limit) {
-                data << it.json
+                data << [id:it.id,username:it.username,admin:it.admin,sales:it.sales,fullname:it.fullname,date:it.date,email:it.email,phone:it.phone,deleted:it.deleted]
             }
             count = sql.firstRow("SELECT FOUND_ROWS() cnt").cnt
             sql.close()
         }
 
         if(data) {
-            return "{success:true, time:${time}, data:[${data.join(',')}], total:${count} }"
+            return [ success:true, time:time, data: data, total:count ]
         }
         else {
-            return "{success:false, time:${time}, crud: 'select users', err:'some error' }"
+            return [ success:false, time:time, crud:'select users', err:'some error.' ]
         }
     }
 
     def final static INSERT_USER =
-        """INSERT LOW_PRIORITY exxact.system_users SET
-        username=?,passwd=?,admin=?,sales=?,date=?,fullname=?,email=?,phone=?,deleted=?"""
+        "INSERT LOW_PRIORITY exxact.system_users SET username=?,passwd=?,admin=?,sales=?,date=?,fullname=?,email=?,phone=?,deleted=?"
 
     def createUsers(user) {
 
@@ -101,10 +89,10 @@ class MySQL {
         }
 
         if(id) {
-            return "{success:true, time:${time}, data: { insertId: ${id} }}"
+            return [ success:true, time:time, data:[insertId:id] ]
         }
         else {
-            return "{success:false, time:${time}, crud: 'insert user', err:'some error' }"
+            return [ success:false, time:time, crud:'insert user', err:'some error' ]
         }
     }
 
@@ -117,16 +105,26 @@ class MySQL {
         }
 
         if(count) {
-            return "{success:true, time:${time}, data: { count: ${count} }}"
+            return [success:true, time:time, data: [updateId:user.id, count:count] ]
         }
         else {
-            return "{success:false, time:${time}, crud: 'update user', err:'some error' }"
+            return [success:false, time:time, crud:'update user', err:'some error' ]
         }
     }
 
-    def eraseUsers() {
+    def eraseUsers(user) {
 
-        return "{success:false, err:'eraseUsers Nothing do.'}"
+        def time = benchmark {
+            count = sql.execute("DELETE LOW_PRIORITY FROM exxact.system_users WHERE id=?", [user.id])
+            sql.close()
+        }
+
+        if(count) {
+            return [ success:true, time:time, data:[deleteId:user.id, count:count] ]
+        }
+        else {
+            return [ success:false, time:time, crud:'delete user', err:'some error' ]
+        }
     }
 
 
@@ -146,8 +144,7 @@ class MySQL {
                 data << value
             }
         }
-        return [set: set, data: data]
+        return [ set:set, data:data ]
     }
 
 }
-

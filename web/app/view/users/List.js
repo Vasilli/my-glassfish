@@ -24,8 +24,8 @@ Ext.define('Exxact.view.users.List', {
         {   dataIndex: 'id',
             renderer: function(v, meta, rec) {
                 return rec.phantom ? '' : v;
-            },
-            hidden: true
+            }
+            //hidden: true
         },
         {   text: 'User Name',
             dataIndex: 'username',

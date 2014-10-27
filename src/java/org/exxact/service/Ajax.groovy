@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
 
 class Ajax extends HttpServlet {
 
@@ -36,16 +37,18 @@ class Ajax extends HttpServlet {
                     case 'read'   : json = sql.readUsers(sort, dir, search, start, limit); break
                     case 'create' : json = sql.createUsers(getJson(request)); break
                     case 'update' : json = sql.updateUsers(getJson(request)); break
-                    case 'erase'  : json = sql.eraseUsers(); break
+                    case 'erase'  : json = sql.eraseUsers(getJson(request)); break
                 }
                 break
 
-            default: json = "{success: false, msg:'Nothing do.'}"
+            default: json = [ success:false, msg:'Nothing do.' ]
         }
 
+        // to json
+        def result = new JsonBuilder(json)
         response.setContentType("application/json;charset=UTF-8")
         def out = response.getWriter()
-        out.print(json)
+        out.write(result.toString())
         out.close()
     }
 
@@ -66,17 +69,6 @@ class Ajax extends HttpServlet {
 
     def private static getJson(request)     { return new JsonSlurper().parse(request.getReader()) }
 
-    def private static StringtoJson(str) {
-        if(!str) return [] 
-        def json
-        try {
-            json = JsonSlurper().parseText(str)
-        }
-        catch(Exception ignore) {
-            json = []
-        }
-//        return new JsonSlurper().parseText(str)
-    }
 
     def void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response)
