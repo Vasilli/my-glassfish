@@ -44,12 +44,13 @@ class MySQL {
         ',admin:',admin,
         ',sales:',sales,
         ',fullname:',QUOTE(fullname),
+        ',date:',QUOTE(date),
         ',email:',QUOTE(email),
         ',phone:',QUOTE(phone),
         ',deleted:',deleted,
         '}') AS CHAR),'{}') json
         FROM exxact.system_users"""
-//        ',date:',QUOTE(date),
+
     def readUsers(sort, search, start, limit) {
 
         def count = 0, data = [], where = '', orderby = ''
@@ -75,16 +76,16 @@ class MySQL {
         }
     }
 
-//    def final static INSERT_USER =
-//        """INSERT LOW_PRIORITY exxact.system_users SET
-//        username=?,passwd=?,admin=?,sales=?,date=?,fullname=?,email=?,phone=?,deleted=?"""
+    def final static INSERT_USER =
+        """INSERT LOW_PRIORITY exxact.system_users SET
+        username=?,passwd=?,admin=?,sales=?,date=?,fullname=?,email=?,phone=?,deleted=?"""
 
     def createUsers(user) {
 
-        def row = fixJsonToRow(user, 'id'), id
+        def id = 0
         def time = benchmark {
-            id = sql.executeInsert("INSERT LOW_PRIORITY exxact.system_users SET ${row.set}", row.data).get(0).get(0) as Integer
-/*            [
+            id = sql.executeInsert(INSERT_USER,
+            [
                 user.username,
                 user.passwd,
                 user.admin    ? user.admin    : false,
@@ -94,8 +95,8 @@ class MySQL {
                 user.email    ? user.email    : '',
                 user.phone    ? user.phone    : '',
                 user.deleted  ? user.admin    : false
-                ]*/
-            //).get(0).get(0) as Integer
+            ]
+            ).get(0).get(0) as Integer
             sql.close()
         }
 
@@ -111,7 +112,7 @@ class MySQL {
 
         def row = fixJsonToRow(user, 'id'), count = 0
         def time = benchmark {
-            count = sql.executeUpdate("UPDATE LOW_PRIORITY exxact.system_users SET ${row.set} WHERE id=${user.id}", row.data)
+            count = sql.executeUpdate("UPDATE LOW_PRIORITY exxact.system_users SET ${row.set.join(',')} WHERE id=${user.id}", row.data)
             sql.close()
         }
 
@@ -145,8 +146,7 @@ class MySQL {
                 data << value
             }
         }
-        println "set=${set}\ndata=${data}"
-        return [set: set.join(','), data: data]
+        return [set: set, data: data]
     }
 
 }

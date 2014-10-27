@@ -43,10 +43,10 @@ Ext.define('Exxact.view.users.List', {
             dataIndex: 'phone',
             flex: 1
         },
-//        {   text: 'Create Date',
-//            dataIndex: 'date',
-//            flex: 1
-//        },
+        {   text: 'Create Date',
+            dataIndex: 'date',
+            flex: 1
+        },
         {   text: 'Admin',
             dataIndex: 'admin',
             width: 55,

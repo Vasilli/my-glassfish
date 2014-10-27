@@ -49,7 +49,7 @@ Ext.define('Exxact.model.Users', {
         { name: 'passwd',   type: 'string',  defaultValue: '' },
         { name: 'admin',    type: 'boolean', defaultValue: false },
         { name: 'sales',    type: 'boolean', defaultValue: false },
-        //{ name: 'date',     type: 'string',  defaultValue: '' },
+        { name: 'date',     type: 'string',  defaultValue: '' },
         { name: 'fullname', type: 'string',  defaultValue: '' },
         { name: 'email',    type: 'string',  defaultValue: '' },
         { name: 'phone',    type: 'string',  defaultValue: '' },

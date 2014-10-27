@@ -55,13 +55,13 @@ Ext.define('Exxact.view.users.Add', {
                 name: 'phone',
                 emptyText: 'xxx-xxx-xxxx'
             },
-//            {
-//                xtype: 'datefield',
-//                name: 'date',
-//                format: 'm/d/Y',
-//                value: new Date(),
-//                hidden: true
-//            },
+            {
+                xtype: 'datefield',
+                name: 'date',
+                format: 'm/d/Y',
+                value: new Date(),
+                hidden: true
+            },
             {
                 xtype:'checkbox',
                 fieldLabel: 'Sales',
