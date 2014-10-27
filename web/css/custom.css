@@ -1,0 +1,77 @@
+
+/*
+ column style: http://skirtlesden.com/articles/styling-extjs-grid-cells
+ icons 16x16: 
+*/
+
+.icon_group {
+  background-image: url(../icons/group.png);
+}
+.user_add {
+  background-image: url(../icons/user_add.png);
+}
+.user_delete {
+  background-image: url(../icons/user_delete.png) !important;
+}
+.user_edit {
+  background-image: url(../icons/user_edit.png) !important;
+}
+
+.quote_add {
+  background-image: url(../icons/layout_add.png) !important;
+}
+.quote_open {
+  background-image: url(../icons/layout_content.png) !important;
+}
+.quote_update {
+  background-image: url(../icons/layout_edit.png) !important;
+}
+.quote_delete {
+  background-image: url(../icons/layout_delete.png) !important;
+}
+
+.eco_add {
+  background-image: url(../icons/script_add.png) !important;
+}
+
+.deleted-row .x-grid-cell {
+  background-color: #ffe2e2;
+  color: #900;
+} 
+
+.user_red {
+  background: url(../icons/user_red.png) no-repeat 20px 1px;
+}
+.user_blue {
+  background: url(../icons/user_blue.png) no-repeat 20px 1px;
+}
+.user_suit { 
+  background: url(../icons/user_suit.png) no-repeat 20px 1px;
+}
+
+.login_key {
+  background-image: url(../icons/bullet_key.png) !important;
+}
+.key_go {
+  background-image: url(../icons/key_go.png) !important;
+}
+
+.capslock {
+  background: url('../icons/bullet_error.png') no-repeat center left;
+  padding:2px;
+  padding-left:20px;
+  font-weight:700;
+}
+
+.parts_add {
+  background-image: url(../icons/parts_add.png);
+}
+.parts_delete {
+  background-image: url(../icons/parts_delete.png) !important;
+}
+.parts_edit {
+  background-image: url(../icons/parts_edit.png) !important;
+}
+.parts_magnify {
+  background-image: url(../icons/parts_magnify.png) !important;
+}
