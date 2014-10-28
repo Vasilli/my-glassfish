@@ -127,7 +127,8 @@ Ext.define('Exxact.view.customers.Update', {
                     },
                     {   fieldLabel: 'Email',
                         name: 's_email',
-                        emptyText: 'username@org.com'
+                        emptyText: 'customername@org.com',
+                        vtype: 'email'
                     }
                     ]
                     // </editor-fold>
@@ -180,7 +181,8 @@ Ext.define('Exxact.view.customers.Update', {
                     },
                     {   fieldLabel: 'Email',
                         name: 'b_email',
-                        emptyText: 'username@org.com'
+                        emptyText: 'customername@org.com',
+                        vtype: 'email'
                     }
                     ]
                     // </editor-fold>

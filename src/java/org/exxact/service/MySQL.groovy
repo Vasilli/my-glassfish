@@ -257,17 +257,37 @@ class MySQL {
     }
     
     def final static INSERT_CUSTS =
-        "INSERT LOW_PRIORITY exxact.customer_profiles SET username=?,passwd=?,admin=?,sales=?,date=?,fullname=?,email=?,phone=?,deleted=?"
+        "INSERT LOW_PRIORITY exxact.customer_profiles SET " +
+        "profile_name=?,terms=?,tax_rate=?," +
+        "b_company=?,b_attn=?,b_street1=?,b_street2=?,b_csz=?,b_contact=?,b_phone=?,b_email=?," +
+        "s_company=?,s_attn=?,s_street1=?,s_street2=?,s_csz=?,s_contact=?,s_phone=?,s_email=?," +
+        "ownerID=?,deleted=?"
     def createCusts = { cust ->
 
         def id = 0
         def time = benchmark {
             id = sql.executeInsert(INSERT_CUSTS, [
-                cust.username,
-                cust.passwd,
-                cust.admin    ? cust.admin    : false,
-                cust.sales    ? cust.sales    : false,
-                cust.date     ? cust.date     : ''
+                cust.profile_name,
+                cust.terms     ? cust.terms     : '',
+                cust.tax_rate  ? cust.tax_rate  : 0,
+                cust.b_company ? cust.b_company : '',
+                cust.b_attn    ? cust.b_attn    : '',
+                cust.b_street1 ? cust.b_street1 : '',
+                cust.b_street2 ? cust.b_street2 : '',
+                cust.b_csz     ? cust.b_csz     : '',
+                cust.b_contact ? cust.b_contact : '',
+                cust.b_phone   ? cust.b_phone   : '',
+                cust.b_email   ? cust.b_email   : '',
+                cust.s_company ? cust.s_company : '',
+                cust.s_attn    ? cust.s_attn    : '',
+                cust.s_street1 ? cust.s_street1 : '',
+                cust.s_street2 ? cust.s_street2 : '',
+                cust.s_csz     ? cust.s_csz     : '',
+                cust.s_contact ? cust.s_contact : '',
+                cust.s_phone   ? cust.s_phone   : '',
+                cust.s_email   ? cust.s_email   : '',
+                cust.ownerID   ? cust.ownerID   : 0,
+                cust.deleted   ? cust.deleted   : false
             ]
             ).get(0).get(0) as Integer
             sql.close()
@@ -282,7 +302,7 @@ class MySQL {
 
         def row = fixJsonToRow(cust, 'id'), count = 0
         def time = benchmark {
-            count = sql.executeUpdate(UPDATE_CUSTS + "${row.set.join(',')} WHERE id=${cust.id}", row.data)
+            count = sql.executeUpdate(UPDATE_CUSTS + " ${row.set.join(',')} WHERE id=${cust.id}", row.data)
             sql.close()
         }
         if(count) return [success:true,  time:time, data: [id:cust.id, count:count] ]

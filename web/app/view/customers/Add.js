@@ -162,7 +162,8 @@ Ext.define('Exxact.view.customers.Add', {
                     },
                     {   fieldLabel: 'Email',
                         name: 's_email',
-                        emptyText: 'username@org.com',
+                        emptyText: 'customername@org.com',
+                        vtype: 'email',
                         listeners: {
                             scope: this,
                             change: this.onMailingAddrFieldChange
@@ -186,7 +187,9 @@ Ext.define('Exxact.view.customers.Add', {
                         anchor: '100%',
                         labelAlign: 'right',
                         labelWidth: 90,
-                        maxLength: 64
+                        maxLength: 64,
+                        disabled: true,
+                        style: 'opacity:.3'
                     },
                     items: [
                     {
@@ -197,55 +200,43 @@ Ext.define('Exxact.view.customers.Add', {
                         checked: true,
                         margin: '0 0 10 0',
                         scope: this,
-                        handler: this.onSameAddressChange
+                        handler: this.onSameAddressChange,
+                        disabled: false,
+                        style: 'opacity:1.0'
                     },
                     {
                         fieldLabel: 'Company',
                         name: 'b_company',
-                        emptyText: 'Company Name',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'Company Name'
                     },
                     {   fieldLabel: 'Attention',
                         name: 'b_attn',
-                        emptyText: 'Attention Name',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'Attention Name'
                     },
                     {   fieldLabel: 'Contact',
                         name: 'b_contact',
-                        emptyText: 'Contact Name',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'Contact Name'
                     },
                     {   fieldLabel: 'Street Address',
                         name: 'b_street1',
-                        emptyText: 'Street Address 1',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'Street Address 1'
                     },
                     {   fieldLabel: 'Street Address',
                         name: 'b_street2',
-                        emptyText: 'Street Address 2',
-                        style: 'opacity:.3', disabled: true
+                        emptyText: 'Street Address 2'
                     },
                     {   fieldLabel: 'City, State, Zip',
                         name: 'b_csz',
-                        emptyText: 'City, State, Zip',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'City, State, Zip'
                     },
                     {   fieldLabel: 'Phone',
                         name: 'b_phone',
-                        emptyText: 'xxx-xxx-xxxx Ext: xxxx',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'xxx-xxx-xxxx Ext: xxxx'
                     },
                     {   fieldLabel: 'Email',
                         name: 'b_email',
-                        emptyText: 'username@org.com',
-                        style: 'opacity:.3',
-                        disabled: true
+                        emptyText: 'customername@org.com',
+                        vtype: 'email'
                     }]
                     // </editor-fold>
                 }]
