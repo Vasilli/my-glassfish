@@ -21,8 +21,8 @@ Ext.define('Exxact.view.quotes.List', {
         {   dataIndex: 'id',
             renderer: function(v, meta, rec) {
                 return rec.phantom ? '' : v;
-            },
-            hidden: true
+            }
+            //hidden: true
         },
         {   text: 'Quote Number',
             dataIndex: 'qo_id',
@@ -34,15 +34,21 @@ Ext.define('Exxact.view.quotes.List', {
             flex: .1
         },
         {   text: 'Salesperson',
-            dataIndex: 'salesperson',
+            dataIndex: 'fullname',
+            sortable: false,
+            menuDisabled: true,
             flex: .1
         },
         {   text: 'Customer Name',
             dataIndex: 'profile_name',
+            sortable: false,
+            menuDisabled: true,
             flex: .1
         },
         {   text: 'Customer Contact',
             dataIndex: 'b_contact',
+            sortable: false,
+            menuDisabled: true,
             flex: .1
         },
         {   text: 'Quote Description',
@@ -51,7 +57,19 @@ Ext.define('Exxact.view.quotes.List', {
         },
         {   text: 'Quote Cost',
             dataIndex: 'cost',
-            formatter: 'usMoney',
+            //formatter: 'usMoney',
+            renderer : function(val) {
+                if(val > 0) return val;
+                return '&nbsp;';
+            },
+            width: 100
+        },
+        {   text: '% Quote GP',
+            dataIndex: 'base_gp',
+            renderer : function(val) {
+                if(val > 0) return '<span>' + val + '%</span>';
+                return '&nbsp;';
+            },
             width: 100
         }
         ],
@@ -64,41 +82,45 @@ Ext.define('Exxact.view.quotes.List', {
             dock: 'top',
             displayInfo: true,
             items: ['-',
-            {
-                itemId: 'add',
+            {   xtype: 'container',
+                flex: .3
+            },
+            {   xtype: 'searchfield',
+                store: 'Quotes',
+                emptyText: 'search quote number',
+                width: 180
+            },
+            {   xtype: 'container',
+                flex: .1
+            },'-',
+            {   itemId: 'add',
                 text: 'New Quote',
                 iconCls: 'quote_add',
                 tooltip: 'Add New Quote',
                 disabled: true
             }, '-',
-            {
-                itemId: 'update',
+            {   itemId: 'update',
                 text: 'Update Quote',
                 iconCls: 'quote_update',
                 tooltip: 'Update Quote',
                 disabled: true
             }, '-',
-            {
-                itemId: 'open',
+            {   itemId: 'open',
                 text: 'Open Quote',
                 iconCls: 'quote_open',
-                tooltip: 'Update Exists Quote',
+                tooltip: 'Open Exists Quote',
                 disabled: true
             }, '-',
-            {
-                itemId: 'remove',
+            {   itemId: 'remove',
                 text: 'Remove Quote',
                 iconCls: 'quote_delete',
                 tooltip: 'Delete Quote',
                 disabled: true
             }, '-',
-            {
-                xtype: 'container',
+            {   xtype: 'container',
                 flex: 1
-            }
-            ]
-        }
-        ],
+            }]
+        }],
         // </editor-fold>
         // <editor-fold defaultstate="collapsed" desc="grid.listeners">
         grid.listeners = {

@@ -80,7 +80,7 @@ Ext.define("Exxact.controller.Quotes", {
             layout: 'fit',
             items: {
                 xtype: 'quoteOpen',
-                quoterow: row
+                quote_id: row.data.qo_id
             }
         }).show();
 

@@ -2,24 +2,32 @@
 Ext.define('Exxact.model.Quote', {
     extend: 'Ext.data.Model',
 
-    idProperty: 'id',
+    idProperty: 'qo_id',
 
     proxy: {
-        type: 'rest',
-        url: '/quote',
+        type: 'ajax',
+        api: {
+            read:    'what?do=quote&ex=read'
+            //update:  'what?do=quotes&ex=update',
+            //create:  'what?do=quotes&ex=create',
+            //destroy: 'what?do=quotes&ex=erase'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data',
             totalProperty: 'total',
             successProperty: 'success'
         },
+        simpleSortMode: true,
+        filterParam: 'query',
+        remoteFilter: true,
         listeners: {
             exception : function(proxy, resp, oper) {
                 var result = Ext.JSON.decode(resp.responseText, true);
 
                 Ext.Msg.show({
                     title: 'Quote "' + oper.action + '" Error!',
-                    msg: result.err.code + ' ' + result.err.errno,
+                    msg: result,
                     icon: Ext.Msg.ERROR,
                     buttons: Ext.Msg.OK
                 });

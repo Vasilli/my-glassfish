@@ -20,6 +20,7 @@ class Ajax extends HttpServlet {
     def void processRequest(request, response) {
 
         def json,
+        ex = legStr(request.getParameter('ex'), ''),
         search = legStr(request.getParameter('search'), ''),
         start  = legInt(request.getParameter('start'), 0),
         limit  = legInt(request.getParameter('limit'), 25)
@@ -33,7 +34,7 @@ class Ajax extends HttpServlet {
             case 'users':
                 def sort = request.getParameter('sort')
                 def dir  = request.getParameter('dir')
-                switch(request.getParameter('ex')) {
+                switch(ex) {
                     case 'read'   : json = sql.readUsers(sort, dir, search, start, limit); break
                     case 'create' : json = sql.createUsers(getJson(request)); break
                     case 'update' : json = sql.updateUsers(getJson(request)); break
@@ -44,7 +45,7 @@ class Ajax extends HttpServlet {
             case 'parts':
                 def sort = request.getParameter('sort')
                 def dir  = request.getParameter('dir')
-                switch(request.getParameter('ex')) {
+                switch(ex) {
                     case 'read'   : json = sql.readParts(sort, dir, search, start, limit); break
                     case 'create' : json = sql.createParts(getJson(request)); break
                     case 'update' : json = sql.updateParts(getJson(request)); break
@@ -52,7 +53,7 @@ class Ajax extends HttpServlet {
                 }
                 break
             case 'cats':
-                switch(request.getParameter('ex')) {
+                switch(ex) {
                     case 'read'   : json = sql.readCats(search, start, limit); break
                 }
                 break
@@ -60,11 +61,33 @@ class Ajax extends HttpServlet {
             case 'custs':
                 def sort = request.getParameter('sort')
                 def dir  = request.getParameter('dir')
-                switch(request.getParameter('ex')) {
+                switch(ex) {
                     case 'read'   : json = sql.readCusts(sort, dir, search, start, limit); break
                     case 'create' : json = sql.createCusts(getJson(request)); break
                     case 'update' : json = sql.updateCusts(getJson(request)); break
                     case 'erase'  : json = sql.eraseCusts(getJson(request)); break
+                }
+                break
+
+            case 'quotes':
+                def sort = request.getParameter('sort')
+                def dir  = request.getParameter('dir')
+                switch(ex) {
+                    case 'read'   : json = sql.readQuotes(sort, dir, search, start, limit); break
+                    //case 'create' : json = sql.createQuotes(getJson(request)); break
+                    //case 'update' : json = sql.updateQuotes(getJson(request)); break
+                    //case 'erase'  : json = sql.eraseQuotes(getJson(request)); break
+                }
+                break
+
+            case 'quote':
+                def sort = request.getParameter('sort')
+                def dir  = request.getParameter('dir')
+                switch(ex) {
+                    case 'read'   : json = sql.readQuote(sort, dir, search, start, limit); break
+                    //case 'create' : json = sql.createQuotes(getJson(request)); break
+                    //case 'update' : json = sql.updateQuotes(getJson(request)); break
+                    //case 'erase'  : json = sql.eraseQuotes(getJson(request)); break
                 }
                 break
 

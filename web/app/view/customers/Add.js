@@ -280,7 +280,7 @@ Ext.define('Exxact.view.customers.Add', {
         // set opacity and disable
         Ext.Array.forEach(fieldset.query('textfield'), function(field) {
             field.setDisabled(checked);
-            field.el.animate({ opacity: checked ? 0.3 : 1 });
+            field.el.animate({ opacity: checked ? 0.3 : 1.0 });
         });
     }
     // </editor-fold>

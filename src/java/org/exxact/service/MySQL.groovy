@@ -322,6 +322,90 @@ class MySQL {
         else      return [ success:false, time:time, crud:'delete cust', err:'some error' ]
     }
 
+/*Quotes*/
+    def final static READ_QUOTES =
+        "SELECT SQL_CALC_FOUND_ROWS qtd.id id,qtd.qo_id qo_id,qtd.date date,esy.fullname fullname,ecp.profile_name profile_name," +
+        "ecp.b_contact b_contact,qtd.quote_name quote_name,qtd.cost cost,qtd.base_gp base_gp " +
+        //"SELECT SQL_CALC_FOUND_ROWS qtd.id id,qtd.qo_id qo_id,qtd.cid cid,qtd.part_id part_id,qtd.eta eta,qtd.cust_id cust_id," +
+        //"qtd.sys_qty sys_qty,qtd.date date,qtd.dateStamp dateStamp,qtd.ship_method ship_method," +
+        //"qtd.salesperson salesperson,qtd.sales_email sales_email,qtd.sales_phone sales_phone,qtd.base_gp base_gp," +
+        //"qtd.option_gp option_gp,qtd.mfr_pn mfr_pn,qtd.part_desc part_desc,qtd.qty qty,qtd.cost cost," +
+        //"qtd.shipping shipping,qtd.deleted deleted,qtd.quote_name quote_name,qtd.config_notes config_notes," +
+        //"qtd.special_notes special_notes,qtd.EA EA,qtd.CustPO CustPO,qtd.TBD_SHIP TBD_SHIP,qtd.rowOrder rowOrder," +
+        //"esy.fullname salesperson' +
+        //"ecp.profile_name profile_name,ecp.b_contact b_contact " +
+        "FROM exxact.quote_data qtd " +
+        "LEFT JOIN exxact.system_users esy ON(qtd.cust_id=esy.id) " +
+        "LEFT JOIN exxact.customer_profiles ecp ON(qtd.cust_id=ecp.id) "
+    def readQuotes = { sort, dir, search, start, limit ->
+
+        def count = 0, data = [], where = ''
+        def time = benchmark {
+            if(search) {
+                where = " WHERE qtd.qo_id LIKE '%${search}%' "
+            }
+            sql.eachRow(READ_QUOTES + " ${where} GROUP BY qtd.qo_id ORDER BY qtd.${sort} ${dir} ", start, limit) {
+                data << [
+                    id:           it.id,
+                    qo_id:        it.qo_id,
+                    date:         it.date,
+                    fullname:     it.fullname,
+                    profile_name: it.profile_name,
+                    b_contact:    it.b_contact,
+                    quote_name:   it.quote_name,
+                    cost:         it.cost,
+                    base_gp:      it.base_gp
+                ]
+            }
+            count = sql.firstRow("SELECT FOUND_ROWS() cnt").cnt
+            sql.close()
+        }
+        if(data) return [ success:true,  time:time, data: data, total:count ]
+        else     return [ success:false, time:time, crud:'select custs', err:'some error.' ]
+    }
+
+
+/*Quote*/
+    def final static READ_QUOTE =
+        "SELECT SQL_CALC_FOUND_ROWS qtd.id id,qtd.qo_id qo_id " +
+//        "SELECT SQL_CALC_FOUND_ROWS qtd.id id,qtd.qo_id qo_id,qtd.date date,esy.fullname fullname,ecp.profile_name profile_name," +
+        //"ecp.b_contact b_contact,qtd.quote_name quote_name,qtd.cost cost " +
+        //"SELECT SQL_CALC_FOUND_ROWS qtd.id id,qtd.qo_id qo_id,qtd.cid cid,qtd.part_id part_id,qtd.eta eta,qtd.cust_id cust_id," +
+        //"qtd.sys_qty sys_qty,qtd.date date,qtd.dateStamp dateStamp,qtd.ship_method ship_method," +
+        //"qtd.salesperson salesperson,qtd.sales_email sales_email,qtd.sales_phone sales_phone,qtd.base_gp base_gp," +
+        //"qtd.option_gp option_gp,qtd.mfr_pn mfr_pn,qtd.part_desc part_desc,qtd.qty qty,qtd.cost cost," +
+        //"qtd.shipping shipping,qtd.deleted deleted,qtd.quote_name quote_name,qtd.config_notes config_notes," +
+        //"qtd.special_notes special_notes,qtd.EA EA,qtd.CustPO CustPO,qtd.TBD_SHIP TBD_SHIP,qtd.rowOrder rowOrder," +
+        //"esy.fullname salesperson' +
+        //"ecp.profile_name profile_name,ecp.b_contact b_contact " +
+        "FROM exxact.quote_data qtd "
+//        "LEFT JOIN exxact.system_users esy ON(qtd.cust_id=esy.id) " +
+//        "LEFT JOIN exxact.customer_profiles ecp ON(qtd.cust_id=ecp.id) "
+    def readQuote = { sort, dir, search, start, limit ->
+
+        def count = 0, data = [], where = ''
+        def time = benchmark {
+            if(search) {
+                where = " qtd.mfr_pn LIKE '%${search}%' "
+            }
+            sql.eachRow(READ_QUOTES + " ${where} WHERE qtd.qo_id= AND qtd.cat= ORDER BY qtd.${sort} ${dir} ", start, limit) {
+                data << [
+                    id:           it.id,
+                    qo_id:        it.qo_id
+/*                    date:         it.date,
+                    fullname:     it.fullname,
+                    profile_name: it.profile_name,
+                    b_contact:    it.b_contact,
+                    quote_name:   it.quote_name,
+                    cost:         it.cost*/
+                ]
+            }
+            count = sql.firstRow("SELECT FOUND_ROWS() cnt").cnt
+            sql.close()
+        }
+        if(data) return [ success:true,  time:time, data: data, total:count ]
+        else     return [ success:false, time:time, crud:'select custs', err:'some error.' ]
+    }
 
     // Time excecution
     def benchmark = { closure ->

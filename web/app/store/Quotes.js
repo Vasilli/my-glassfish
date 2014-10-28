@@ -4,7 +4,7 @@ Ext.define('Exxact.store.Quotes', {
 
     model: 'Exxact.model.Quotes',
 
-    pageSize: 24,
+    pageSize: 23,
     loadMask: true,
     remoteSort: true,
 

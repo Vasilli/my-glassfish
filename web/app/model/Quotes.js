@@ -5,21 +5,29 @@ Ext.define('Exxact.model.Quotes', {
     idProperty: 'id',
 
     proxy: {
-        type: 'rest',
-        url: '/quotes',
+        type: 'ajax',
+        api: {
+            read:    'what?do=quotes&ex=read'
+            //update:  'what?do=quotes&ex=update',
+            //create:  'what?do=quotes&ex=create',
+            //destroy: 'what?do=quotes&ex=erase'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data',
             totalProperty: 'total',
             successProperty: 'success'
         },
+        simpleSortMode: true,
+        filterParam: 'query',
+        remoteFilter: true,
         listeners: {
             exception : function(proxy, resp, oper) {
                 var result = Ext.JSON.decode(resp.responseText, true);
 
                 Ext.Msg.show({
                     title: 'Quotes "' + oper.action + '" Error!',
-                    msg: result.err.code + ' ' + result.err.errno,
+                    msg: result,
                     icon: Ext.Msg.ERROR,
                     buttons: Ext.Msg.OK
                 });
@@ -28,15 +36,16 @@ Ext.define('Exxact.model.Quotes', {
     },
     // <editor-fold defaultstate="collapsed" desc="fields">
     fields: [
-        { name: 'id',            type: 'int' },
-        { name: 'qo_id',         type: 'int' }
-
-        //{ name: 'date',          type: 'string' },
-        //{ name: 'quote_name',    type: 'string' },
-        //{ name: 'salesperson',   type: 'string' },
-        //{ name: 'profile_name',  type: 'string' },
-        //{ name: 'b_contact',     type: 'string' },
-        //{ name: 'cost',          type: 'float' }
+        { name: 'id',           type: 'int' },
+        { name: 'qo_id',        type: 'int' },
+        { name: 'date',         type: 'string' },
+        { name: 'fullname',     type: 'string' },
+        { name: 'profile_name', type: 'string' },
+        { name: 'b_contact',    type: 'string' },
+        { name: 'quote_name',   type: 'string' },
+        { name: 'cost',         type: 'float' },
+        { name: 'base_gp',      type: 'float' },
+        { name: 'cid',          type: 'int' }
 
 /*        { name: 'cid',           type: 'int' },
         { name: 'eta',           type: 'string' },

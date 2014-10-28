@@ -10,8 +10,7 @@ Ext.define('Exxact.view.quotes.Open', {
 
     constructor: function(config) {
         var grid = this;
-        grid.quoterow = config.quoterow;
-        console.log('config=',grid.quoterow.id);
+        console.log('config quote_id=',config.quote_id);
 
         config.store = Ext.create('Exxact.store.Quote');
 
@@ -24,6 +23,10 @@ Ext.define('Exxact.view.quotes.Open', {
             renderer: function(v, meta, rec) {
                 return rec.phantom ? '' : v;
             }
+        },
+        {   text: 'Quote Number',
+            dataIndex: 'qo_id',
+            flex: .1
         }
         ],
         // </editor-fold>

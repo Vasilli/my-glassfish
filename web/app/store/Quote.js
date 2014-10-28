@@ -6,7 +6,7 @@ Ext.define('Exxact.store.Quote', {
 
     pageSize: 15,
     loadMask: true,
-    //remoteSort: true,
+    remoteSort: true,
 
     sorters: [{
         property: 'qo_id',
