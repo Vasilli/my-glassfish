@@ -89,7 +89,7 @@ class MySQL {
         }
 
         if(id) {
-            return [ success:true, time:time, data:[insertId:id] ]
+            return [ success:true, time:time, data:[id:id,insertId:id] ]
         }
         else {
             return [ success:false, time:time, crud:'insert user', err:'some error' ]
@@ -105,7 +105,7 @@ class MySQL {
         }
 
         if(count) {
-            return [success:true, time:time, data: [updateId:user.id, count:count] ]
+            return [success:true, time:time, data: [updateId:user.id] ]
         }
         else {
             return [success:false, time:time, crud:'update user', err:'some error' ]
