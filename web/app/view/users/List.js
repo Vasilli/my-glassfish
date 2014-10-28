@@ -120,7 +120,7 @@ Ext.define('Exxact.view.users.List', {
             //    grid.getStore().load();
             //},
             selectionchange: function (view, records) {
-                //grid.down('#remove').setDisabled(!records.length);
+                grid.down('#remove').setDisabled(!records.length);
                 grid.down('#update').setDisabled(!records.length);
             }
         },

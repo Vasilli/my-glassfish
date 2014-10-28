@@ -14,7 +14,7 @@ Ext.define('Exxact.view.users.Update', {
     initComponent: function() {
         var me = this;
 
-        // <editor-fold defaultstate="collapsed" desc="me.items">
+        // <editor-fold defaultstate="collapsed" desc="me.items">//GEN-BEGIN:initComponents
         me.items = [{
             xtype: 'form',
             bodyPadding: 20,
@@ -63,7 +63,7 @@ Ext.define('Exxact.view.users.Update', {
                 name: 'deleted'
             }]
         }],
-        // </editor-fold>
+        // </editor-fold>//GEN-END:initComponents
         // <editor-fold defaultstate="collapsed" desc="me.buttons">
         me.buttons = [
         {

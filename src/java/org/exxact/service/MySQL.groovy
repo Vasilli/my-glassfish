@@ -14,11 +14,8 @@ class MySQL {
         sql = new Sql(ds)
     }
 
-
     def final static LOGIN =
-        """SELECT id,username,admin,sales
-        FROM exxact.system_users
-        WHERE deleted=0 AND username=? AND passwd=?"""
+        "SELECT id,username,admin,sales FROM exxact.system_users WHERE deleted=0 AND username=? AND passwd=?"
 
     def testLogin = { user, passwd ->
 
@@ -27,7 +24,6 @@ class MySQL {
             row = sql.firstRow(LOGIN,[user, passwd])
             sql.close()
         }
-
         if(row) {
             return [ success:true, time:time, user:[ id:row.id, name:row.username, admin:row.admin, sales:row.sales ] ]
         }
@@ -39,8 +35,7 @@ class MySQL {
     def final static READ_USERS =
         "SELECT SQL_CALC_FOUND_ROWS id,username,admin,sales,fullname,date,email,phone,deleted FROM exxact.system_users "
 
-
-    def readUsers(sort, dir, search, start, limit) {
+    def readUsers = { sort, dir, search, start, limit ->
 
         def count = 0, data = [], where = '', orderby = ''
         def time = benchmark {
@@ -56,7 +51,6 @@ class MySQL {
             count = sql.firstRow("SELECT FOUND_ROWS() cnt").cnt
             sql.close()
         }
-
         if(data) {
             return [ success:true, time:time, data: data, total:count ]
         }
@@ -68,7 +62,7 @@ class MySQL {
     def final static INSERT_USER =
         "INSERT LOW_PRIORITY exxact.system_users SET username=?,passwd=?,admin=?,sales=?,date=?,fullname=?,email=?,phone=?,deleted=?"
 
-    def createUsers(user) {
+    def createUsers = { user ->
 
         def id = 0
         def time = benchmark {
@@ -87,46 +81,49 @@ class MySQL {
             ).get(0).get(0) as Integer
             sql.close()
         }
-
         if(id) {
-            return [ success:true, time:time, data:[id:id,insertId:id] ]
+            return [ success:true, time:time, data:[id:id] ]
         }
         else {
             return [ success:false, time:time, crud:'insert user', err:'some error' ]
         }
     }
 
-    def updateUsers(user) {
+    def final static UPDATE_USER =
+        "UPDATE LOW_PRIORITY exxact.system_users SET "
+
+    def updateUsers = { user ->
 
         def row = fixJsonToRow(user, 'id'), count = 0
         def time = benchmark {
-            count = sql.executeUpdate("UPDATE LOW_PRIORITY exxact.system_users SET ${row.set.join(',')} WHERE id=${user.id}", row.data)
+            count = sql.executeUpdate(UPDATE_USER + "${row.set.join(',')} WHERE id=${user.id}", row.data)
             sql.close()
         }
-
         if(count) {
-            return [success:true, time:time, data: [updateId:user.id] ]
+            return [success:true, time:time, data: [id:user.id, count:count] ]
         }
         else {
             return [success:false, time:time, crud:'update user', err:'some error' ]
         }
     }
 
-    def eraseUsers(user) {
+    def final static DELETE_USER =
+        "DELETE LOW_PRIORITY FROM exxact.system_users WHERE id=?"
 
+    def eraseUsers = { user ->
+
+        def count = 0
         def time = benchmark {
-            count = sql.execute("DELETE LOW_PRIORITY FROM exxact.system_users WHERE id=?", [user.id])
+            count = sql.executeUpdate(DELETE_USER, user.id)
             sql.close()
         }
-
         if(count) {
-            return [ success:true, time:time, data:[deleteId:user.id, count:count] ]
+            return [ success:true, time:time, data:[id:user.id, count:count] ]
         }
         else {
             return [ success:false, time:time, crud:'delete user', err:'some error' ]
         }
     }
-
 
     // Time excecution
     def benchmark = { closure ->
