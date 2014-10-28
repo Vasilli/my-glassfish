@@ -21,8 +21,8 @@ Ext.define('Exxact.view.customers.List', {
         {   dataIndex: 'id',
             renderer: function(v, meta, rec) {
                 return rec.phantom ? '' : v;
-            },
-            hidden: true
+            }
+            //hidden: true
         },
         {   text: 'Profile Name',
             dataIndex: 'profile_name',
@@ -201,7 +201,7 @@ Ext.define('Exxact.view.customers.List', {
                 //var combo = Ext.ComponentQuery.query('#combo')[0];
                 //combo.setDisabled(!records.length);
                 grid.down('#update').setDisabled(!records.length);
-                //grid.down('#remove').setDisabled(!records.length);
+                grid.down('#remove').setDisabled(!records.length);
                 //grid.down('#quote').setDisabled(!records.length);
                 //grid.down('#eco').setDisabled(!records.length);
             }

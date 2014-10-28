@@ -5,21 +5,29 @@ Ext.define('Exxact.model.Customers', {
     idProperty: 'id',
 
     proxy: {
-        type: 'rest',
-        url: '/customers',
+        type: 'ajax',
+        api: {
+            read:    'what?do=custs&ex=read',
+            update:  'what?do=custs&ex=update',
+            create:  'what?do=custs&ex=create',
+            destroy: 'what?do=custs&ex=erase'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data',
             totalProperty: 'total',
             successProperty: 'success'
         },
+        simpleSortMode: true,
+        filterParam: 'query',
+        remoteFilter: true,
         listeners: {
             exception : function(proxy, resp, oper) {
                 var result = Ext.JSON.decode(resp.responseText, true);
 
                 Ext.Msg.show({
                     title: 'Customers "' + oper.action + '" Error!',
-                    msg: result.err.code + ' ' + result.err.errno,
+                    msg: result,
                     icon: Ext.Msg.ERROR,
                     buttons: Ext.Msg.OK
                 });
@@ -29,8 +37,8 @@ Ext.define('Exxact.model.Customers', {
 
     // <editor-fold defaultstate="collapsed" desc="fields">
     fields: [
-        { name: 'id',           type: 'int',     unique: true },
-        { name: 'profile_name', type: 'string',  unique: true },
+        { name: 'id',           type: 'int', unique: true },
+        { name: 'profile_name', type: 'string' },
         { name: 'terms',        type: 'string' },
         { name: 'tax_rate',     type: 'float' },
         { name: 'b_company',    type: 'string' },

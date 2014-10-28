@@ -57,6 +57,17 @@ class Ajax extends HttpServlet {
                 }
                 break
 
+            case 'custs':
+                def sort = request.getParameter('sort')
+                def dir  = request.getParameter('dir')
+                switch(request.getParameter('ex')) {
+                    case 'read'   : json = sql.readCusts(sort, dir, search, start, limit); break
+                    case 'create' : json = sql.createCusts(getJson(request)); break
+                    case 'update' : json = sql.updateCusts(getJson(request)); break
+                    case 'erase'  : json = sql.eraseCusts(getJson(request)); break
+                }
+                break
+
             default: json = [ success:false, msg:'Nothing do.' ]
         }
 

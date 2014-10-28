@@ -5,7 +5,7 @@ Ext.define('Exxact.store.Customers', {
     model: 'Exxact.model.Customers',
 
     remoteSort: true,
-    pageSize: 24,
+    pageSize: 23,
     loadMask: true,
 
     sorters: [{
