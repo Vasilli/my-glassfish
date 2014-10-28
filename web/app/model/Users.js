@@ -5,8 +5,6 @@ Ext.define('Exxact.model.Users', {
     idProperty: 'id',
 
     proxy: {
-        //type: 'rest',
-        //url: '/users',
         //limitParam: 'rows',
         //extraParams: {
         //    wt: 'json',

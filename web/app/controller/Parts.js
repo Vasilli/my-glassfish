@@ -79,7 +79,7 @@ Ext.define("Exxact.controller.Parts", {
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="onPartRemoveClick">
     onPartExternalPriceClick: function () {
-        console.log('onPartExternalPriceClick');
+
         var window = Ext.widget('partPricePrice');
 
         window.show();
@@ -112,6 +112,8 @@ Ext.define("Exxact.controller.Parts", {
 
         if(form.isValid()) {
             var values = form.getValues();
+            // safe delete not used params
+            delete values.cat_name;
 
             form.getRecord().set(values); // perform update
 

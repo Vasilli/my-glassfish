@@ -5,8 +5,13 @@ Ext.define('Exxact.model.Parts', {
     idProperty: 'id',
 
     proxy: {
-        type: 'rest',
-        url: '/parts',
+        type: 'ajax',
+        api: {
+            read:    'what?do=parts&ex=read',
+            update:  'what?do=parts&ex=update',
+            create:  'what?do=parts&ex=create',
+            destroy: 'what?do=parts&ex=erase'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data',
@@ -15,13 +20,14 @@ Ext.define('Exxact.model.Parts', {
         },
         filterParam: 'query',
         remoteFilter: true,
+        simpleSortMode: true,
         listeners: {
             exception : function(proxy, resp, oper) {
                 var result = Ext.JSON.decode(resp.responseText, true);
 
                 Ext.Msg.show({
                     title: 'Parts "' + oper.action + '" Error!',
-                    msg: result.err.code + ' ' + result.err.errno,
+                    msg: result,
                     icon: Ext.Msg.ERROR,
                     buttons: Ext.Msg.OK
                 });

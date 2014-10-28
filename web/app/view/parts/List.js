@@ -24,8 +24,8 @@ Ext.define('Exxact.view.parts.List', {
         {   dataIndex: 'id',
             renderer: function(v, meta, rec) {
                 return rec.phantom ? '' : v;
-            },
-            hidden: true
+            }
+            //hidden: true
         },
         {   text: 'Mfr PN',
             dataIndex: 'mfr_pn',
@@ -105,7 +105,7 @@ Ext.define('Exxact.view.parts.List', {
             //    grid.getStore().load();
             //},
             selectionchange: function (view, records) {
-                //grid.down('#remove').setDisabled(!records.length);
+                grid.down('#remove').setDisabled(!records.length);
                 grid.down('#update').setDisabled(!records.length);
             }
         },

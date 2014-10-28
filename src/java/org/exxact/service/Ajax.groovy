@@ -11,13 +11,11 @@ class Ajax extends HttpServlet {
 
     def sql
 
-// <editor-fold defaultstate="collapsed" desc="init">
     def void init(ServletConfig config) {
 	super.init(config)
 
         sql = new MySQL()
     }
-// </editor-fold>
 
     def void processRequest(request, response) {
 
@@ -43,6 +41,22 @@ class Ajax extends HttpServlet {
                 }
                 break
 
+            case 'parts':
+                def sort = request.getParameter('sort')
+                def dir  = request.getParameter('dir')
+                switch(request.getParameter('ex')) {
+                    case 'read'   : json = sql.readParts(sort, dir, search, start, limit); break
+                    case 'create' : json = sql.createParts(getJson(request)); break
+                    case 'update' : json = sql.updateParts(getJson(request)); break
+                    case 'erase'  : json = sql.eraseParts(getJson(request)); break
+                }
+                break
+            case 'cats':
+                switch(request.getParameter('ex')) {
+                    case 'read'   : json = sql.readCats(search, start, limit); break
+                }
+                break
+
             default: json = [ success:false, msg:'Nothing do.' ]
         }
 
@@ -54,7 +68,6 @@ class Ajax extends HttpServlet {
         out.close()
     }
 
-// <editor-fold defaultstate="collapsed" desc="private">
     def private static legInt(value, deff) {
 
         def integer = deff
@@ -66,19 +79,14 @@ class Ajax extends HttpServlet {
         }
         return integer as Integer
     }
-
     def private static legStr(value, deff)  { return value ? value as String : deff }
-
     def private static getJson(request)     { return new JsonSlurper().parse(request.getReader()) }
-// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="doGet,doPost">
     def void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response)
     }
     def void doPost(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response)
     }
-// </editor-fold>
 }
 

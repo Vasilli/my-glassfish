@@ -5,8 +5,10 @@ Ext.define('Exxact.model.CategoriesWidget', {
     idProperty: 'cat_id',
 
     proxy: {
-        type: 'rest',
-        url: '/catswidget',
+        type: 'ajax',
+        api: {
+            read: 'what?do=cats&ex=read'
+        },
         reader: {
             type: 'json',
             rootProperty: 'data',
@@ -19,7 +21,7 @@ Ext.define('Exxact.model.CategoriesWidget', {
 
                 Ext.Msg.show({
                     title: 'Categories Widget "' + oper.action + '" Error!',
-                    msg: result.err.code + ' ' + result.err.errno,
+                    msg: result,
                     icon: Ext.Msg.ERROR,
                     buttons: Ext.Msg.OK
                 });
